@@ -1,0 +1,126 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Get Latitude Longitude on an OSM Basemap</title>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+     integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+     crossorigin=""/>
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+     integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+     crossorigin=""></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+<br/>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+  <h1>Peter's locator app</h1>
+    <h3 class="panel-title"><h2>Get the Latitude Longitude of Any Location</h2></h3>
+  </div>
+  <div class="panel-body">
+    	
+	<p class = "lead text-justify">
+   You can use the simple <a href = "http://leafletjs.com/">Leaflet</a>-based map using <a href = "http://www.openstreetmap.org/">OpenStreetMap</a> layers to find the Latitude/Longitude of any location on the Earth's surface. 	</p>
+	<p class = "lead text-justify">
+	Just <strong>Pan and Zoom</strong> the map below to find your location. The <strong>Locational Information</strong> will appear below the map as you click. 
+	</p>
+	
+	<div id="map" style="width: 100%; height: 800px"></div>
+	<!-- we need a new DIV content pane to put the information for the GetLatLong Tool -->
+	<div id="mycoordinates"></div>
+
+	<script>
+
+var individualMarkerLayer; 
+
+var OpenStreetMap_Mapnik = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
+
+var listOfLayers = [OpenStreetMap_Mapnik];
+
+var baseMaps = {
+    "OpenStreetMap Streets": OpenStreetMap_Mapnik
+};
+<!-- Here is the CENTER coordinates of our map -->
+
+var LatitudeCenter = 53.38389;
+
+var LongitudeCenter = -6.57733;
+
+<!-- here is the starting zoom level of our map -->
+
+var ZoomLevel = 14;
+
+var mymap = L.map('map', {
+    center: [LatitudeCenter,  LongitudeCenter],
+    zoom: ZoomLevel,
+    layers: listOfLayers
+});
+
+L.control.layers(baseMaps).addTo(mymap);
+
+// This is the where Javascript is connected to the map when you 'click' on the map
+mymap.on('click', onMapClick);
+
+// THIS IS NEW. This is a special FUNCTION from Javascript. 
+// Leaflet has lots of functionality that we can use. This is very useful to display information about the map
+// e is the Javascript object holding information about the point which has been clicked. 
+function onMapClick(e) {
+	var theDateAndTime = new Date();
+	var mapCenter = mymap.getCenter();
+	
+	if (individualMarkerLayer)
+	{
+		mymap.removeLayer(individualMarkerLayer); // remove
+
+	}
+	var d = new Date(); // for now
+	theHours = d.getHours(); // => 9
+	theMinutes = d.getMinutes(); // =>  30
+	theSeconds = d.getSeconds(); // => 51
+	
+	
+	individualMarkerLayer = new L.Marker(e.latlng).bindPopup("<b>MARKER:</b> At " + theHours + ":" + theMinutes + ":" + theSeconds + " you clicked here" ); // set
+	mymap.addLayer(individualMarkerLayer);
+
+
+	
+	
+	var GoogleMapsLink = "https://www.google.com/maps?q="  + (e.latlng.lat).toFixed(6) + "," + (e.latlng.lng).toFixed(6) + "&hl=en&t=m&z=" + mymap.getZoom();
+
+    $("#mycoordinates").html("<div class='well well-sm'><p class = 'lead text-justify'><strong>Geo Coordinate Information</strong>:<br/> At " + theDateAndTime + "<br/>You clicked the map at Coordinates " + "(Lat, Lon): <strong>" + (e.latlng.lat).toFixed(6) + "," + (e.latlng.lng).toFixed(6) +"</strong><br/>Map Zoom level: <strong>"+ mymap.getZoom() + "</strong><br/>Map Center (Lat,Lon): <strong>" + (mapCenter.lat).toFixed(6) + "," + (mapCenter.lng).toFixed(6) + "</strong><br/>Leaflet Marker Code: <code>L.marker([" + (e.latlng.lat).toFixed(6) +"," +(e.latlng.lng).toFixed(6) +"])</code><br/>Point as Well Known Text: <code>POINT(" + (e.latlng.lng).toFixed(6) +" " +(e.latlng.lat).toFixed(6) +")</code><br/>Point as Well Known Text for PostGIS: <code>St_GeomFromText('POINT(" + (e.latlng.lng).toFixed(6) +" " +(e.latlng.lat).toFixed(6) +")',4326);</code></p><p class = 'lead text-justify'>View this location on <a title = 'View this location on Google Maps - this will open in a new window or tab' target = '_blank' href = \"" + GoogleMapsLink + "\">Google Maps</a></p></div>");
+}
+
+	</script>
+	
+
+
+<p class = "text-justify"><small><samp>You are free to copy this code and reuse it. However all reuse applications are your responsibility. There are no guarantees with this code.</samp></small>
+
+</div><!-- panel body -->
+</div><!-- panel -->
+
+
+
+	</div> <!-- end a row -->	
+</div> <!-- close the container -->
+</body>
+</html>
+
