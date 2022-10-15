@@ -28,20 +28,19 @@
 <br/>
 <div class="panel panel-primary">
   <div class="panel-heading">
-  <h1>Peter's locator app</h1>
-    <h3 class="panel-title"><h2>Get the Latitude Longitude of Any Location</h2></h3>
+
+    <h3 class="panel-title"><h2>The 'locator' app</h2></h3>
   </div>
   <div class="panel-body">
     	
+
 	<p class = "lead text-justify">
-   You can use the simple <a href = "http://leafletjs.com/">Leaflet</a>-based map using <a href = "http://www.openstreetmap.org/">OpenStreetMap</a> layers to find the Latitude/Longitude of any location on the Earth's surface. 	</p>
-	<p class = "lead text-justify">
-	Just <strong>Pan and Zoom</strong> the map below to find your location. The <strong>Locational Information</strong> will appear below the map as you click. 
+	Just <strong>Pan and Zoom</strong> then <strong>click</strong> the map below to find your location. The <strong>Locational Information</strong> will here when you click. 
 	</p>
-	
-	<div id="map" style="width: 100%; height: 800px"></div>
 	<!-- we need a new DIV content pane to put the information for the GetLatLong Tool -->
-	<div id="mycoordinates"></div>
+	<div id="mycoordinates"></div>	
+	<div id="map" style="width: 100%; height: 800px"></div>
+
 
 	<script>
 
@@ -105,7 +104,7 @@ function onMapClick(e) {
 	
 	var GoogleMapsLink = "https://www.google.com/maps?q="  + (e.latlng.lat).toFixed(6) + "," + (e.latlng.lng).toFixed(6) + "&hl=en&t=m&z=" + mymap.getZoom();
 
-    $("#mycoordinates").html("<div class='well well-sm'><p class = 'lead text-justify'><strong>Geo Coordinate Information</strong>:<br/> At " + theDateAndTime + "<br/>You clicked the map at Coordinates " + "(Lat, Lon): <strong>" + (e.latlng.lat).toFixed(6) + "," + (e.latlng.lng).toFixed(6) +"</strong><br/>Map Zoom level: <strong>"+ mymap.getZoom() + "</strong><br/>Map Center (Lat,Lon): <strong>" + (mapCenter.lat).toFixed(6) + "," + (mapCenter.lng).toFixed(6) + "</strong><br/>Leaflet Marker Code: <code>L.marker([" + (e.latlng.lat).toFixed(6) +"," +(e.latlng.lng).toFixed(6) +"])</code><br/>Point as Well Known Text: <code>POINT(" + (e.latlng.lng).toFixed(6) +" " +(e.latlng.lat).toFixed(6) +")</code><br/>Point as Well Known Text for PostGIS: <code>St_GeomFromText('POINT(" + (e.latlng.lng).toFixed(6) +" " +(e.latlng.lat).toFixed(6) +")',4326);</code></p><p class = 'lead text-justify'>View this location on <a title = 'View this location on Google Maps - this will open in a new window or tab' target = '_blank' href = \"" + GoogleMapsLink + "\">Google Maps</a></p></div>");
+    $("#mycoordinates").html("<div class='well well-sm'><p class = 'lead text-justify'>Clicked at " + "(Lat, Lon): <strong>" + (e.latlng.lat).toFixed(6) + "," + (e.latlng.lng).toFixed(6) +"</strong><br/>Map Zoom level: <strong>"+ mymap.getZoom() + "</strong><br/>WKT: <code>POINT(" + (e.latlng.lng).toFixed(6) +" " +(e.latlng.lat).toFixed(6) +")</code><br/><strong>WKT for PostGIS</strong>: <code>St_GeomFromText('POINT(" + (e.latlng.lng).toFixed(6) +" " +(e.latlng.lat).toFixed(6) +")',4326);</code></p><p class = 'lead text-justify'>View this location on <a title = 'View this location on Google Maps - this will open in a new window or tab' target = '_blank' href = \"" + GoogleMapsLink + "\">Google Maps</a></p></div>");
 }
 
 	</script>
