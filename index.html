@@ -22,20 +22,21 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <div class="container-fluid">
+  <div class="container-lg">
   <div class="row">
     <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
 <br/>
 <div class="panel panel-primary">
   <div class="panel-heading">
 
-    <h3 class="panel-title"><h2>The 'locator' app</h2></h3>
+    <!--<h3 class="panel-title"><h2>The 'locator' app</h2></h3>-->
   </div>
   <div class="panel-body">
     	
+<h3 class="display-3"><strong>The CS621 'locator' app</strong></h3>
 
 	<p class = "lead text-justify">
-	Just <strong>Pan and Zoom</strong> then <strong>click</strong> the map below to find your location. The <strong>Locational Information</strong> will here when you click. 
+	Just <strong>Pan and Zoom</strong> then <strong>click</strong> the map below to find your location. The <strong>location information</strong> will here when you click on the map. 
 	</p>
 	<!-- we need a new DIV content pane to put the information for the GetLatLong Tool -->
 	<div id="mycoordinates"></div>	
@@ -104,7 +105,7 @@ function onMapClick(e) {
 	
 	var GoogleMapsLink = "https://www.google.com/maps?q="  + (e.latlng.lat).toFixed(6) + "," + (e.latlng.lng).toFixed(6) + "&hl=en&t=m&z=" + mymap.getZoom();
 
-    $("#mycoordinates").html("<div class='well well-sm'><p class = 'lead text-justify'>Clicked at " + "(Lat, Lon): <strong>" + (e.latlng.lat).toFixed(6) + "," + (e.latlng.lng).toFixed(6) +"</strong><br/>Map Zoom level: <strong>"+ mymap.getZoom() + "</strong><br/>WKT: <code>POINT(" + (e.latlng.lng).toFixed(6) +" " +(e.latlng.lat).toFixed(6) +")</code><br/><strong>WKT for PostGIS</strong>: <code>St_GeomFromText('POINT(" + (e.latlng.lng).toFixed(6) +" " +(e.latlng.lat).toFixed(6) +")',4326);</code></p><p class = 'lead text-justify'>View this location on <a title = 'View this location on Google Maps - this will open in a new window or tab' target = '_blank' href = \"" + GoogleMapsLink + "\">Google Maps</a></p></div>");
+    $("#mycoordinates").html("<div class='alert alert-info' role='alert'><p class = 'lead text-justify'>Clicked at " + "(Lat, Lon): <strong>" + (e.latlng.lat).toFixed(6) + "," + (e.latlng.lng).toFixed(6) +"</strong>, map zoom level: <strong>"+ mymap.getZoom() + "</strong><br/><strong>WKT:</strong> <code>POINT(" + (e.latlng.lng).toFixed(6) +" " +(e.latlng.lat).toFixed(6) +")</code><br/><strong>WKT for PostGIS</strong>: <code>St_GeomFromText('POINT(" + (e.latlng.lng).toFixed(6) +" " +(e.latlng.lat).toFixed(6) +")',4326)</code></p><p class = 'lead text-justify'>View this location on <a title = 'View this location on Google Maps - this will open in a new window or tab' target = '_blank' href = \"" + GoogleMapsLink + "\">Google Maps</a></p></div>");
 }
 
 	</script>
